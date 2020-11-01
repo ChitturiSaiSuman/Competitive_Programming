@@ -1,0 +1,75 @@
+from sys import stdin,stdout
+from collections import defaultdict 
+import math
+mod=10**9+7
+def primeFactors(n): 
+    a =[]
+    while n % 2 == 0: 
+        a.append(2)
+        n = n / 2
+    for i in range(3, int(math.sqrt(n))+1, 2): 
+        while n % i == 0: 
+            a.append(i)
+            n = n/ i 
+    if n > 2: 
+        a.append(n)
+    return a
+def CountFrequency(my_list):  
+    freq = {} 
+    for item in my_list: 
+        if (item in freq): 
+            freq[item] += 1
+        else: 
+            freq[item] = 1 
+    return freq
+def factorise(a):
+    g = []
+    n=len(numbers)
+    for i in range(n):
+        f = primeFactors(a[i])
+        r = list(map(int, f)) 
+        g += r
+    m = CountFrequency(g)
+    p = 1
+    for i in m :
+        p =(p* (m[i] + 1))%mod
+    stdout.write(str(p)+'\n')
+class Graph:
+	def __init__(self,vertices):
+	    self.V = vertices
+	    self.graph = dict()
+	def addEdge(self,u,v):
+	    try:
+	        self.graph[u].append(v)
+	    except:
+	        self.graph[u]=[v]
+	def find_path(self, graph, start, end, path=[]):
+	    path = path + [start]
+	    if start == end:
+	        return path
+	    if start not in graph:
+	        return None
+	    for node in graph[start]:
+	        if node not in path:
+	            newpath = self.find_path(graph, node, end, path)
+	            if newpath: return newpath
+	    return None
+t=int(stdin.readline())
+while t>0:
+    n=int(stdin.readline())
+    g=Graph(n)
+    for _ in range(n-1):
+        u,v=map(int,stdin.readline().split())
+        g.addEdge(u,v)
+        g.addEdge(v,u)
+    costs=list(map(int,stdin.readline().split()))
+    costs.insert(0,0)
+    q=int(stdin.readline())
+    for _ in range(q):
+        u,v=map(int,stdin.readline().split())
+        path=g.find_path(g.graph,u,v)
+        numbers=[]
+        for i in path:
+            numbers.append(costs[i])
+        factorise(numbers)
+    t-=1

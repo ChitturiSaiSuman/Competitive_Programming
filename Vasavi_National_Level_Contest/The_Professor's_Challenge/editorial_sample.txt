@@ -1,0 +1,1 @@
+$$F(x_2,y_2) = (N-2)\times (x_2^2+y_2^2) + (\sum_{i=2}^{N}(x_i)^2+(y_i)^2 ) - (x_2^2+y_2^2) - 2\times x_2\times((\sum_{i=2}^{N}(x_i))-x_2) - 2\times y_2\times((\sum_{i=2}^{N}(y_i))-y_2)$$
