@@ -69,24 +69,6 @@ int binary_search(int a[], int lb, int ub, int key)
     return -1;
 }
 /*
-* Longest Common Subsequence of Strings (LCS) *************
-*/
-/*
-int lcs(char s1[], char s2[], int m, int n)
-{
-	int dp[m+1][n+1];
-	for(int i=0;i<=m;i++)
-		for(int j=0;j<=n;j++)
-			if(i==0 or j==0)
-				dp[i][j] = 0;
-			else if(s1[i] == s2[j])
-				dp[i][j] = dp[i-1][j-1]+1;
-			else
-				dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
-	return dp[m][n];
-}
-*/
-/*
 * GCD and LCM of two numbers *********************
 */
 /*
@@ -104,55 +86,6 @@ ll lcm(ll a, ll b)
 {
 	return ((a*b)/gcd(a,b));
 }
-*/
-/*
-* Disjoin Set Union - Weighted Union - DSU - Sets ***************************
-*/
-/*
-
-int *Parent,*setSize,whole;
-
-void initialise(int N)
-{
-    whole = N+5;
-    Parent = newInt(whole);
-    setSize = newInt(whole);
-    FOR(i,whole) {
-        Parent[i] = setSize[i] = i;
-    }
-}
-
-int getParent(int item)
-{
-    while(Parent[item]!=item)
-    {
-        Parent[item] = Parent[Parent[item]];
-        item = Parent[item];
-    }
-    return item;
-}
-
-bool findIfSameSet(int A, int B)
-{
-    return getParent(A)==getParent(B);
-}
-
-void Union(int A,int B)
-{
-    int Parent_A = getParent(A);
-    int Parent_B = getParent(B);
-    if(setSize[Parent_A] < setSize[Parent_B])
-    {
-        Parent[Parent_A] = Parent[Parent_B];
-        setSize[Parent_B] += setSize[Parent_A];
-    }
-    else
-    {
-        Parent[Parent_B] = Parent[Parent_A];
-        setSize[Parent_A] += setSize[Parent_B];
-    }
-}
-
 */
 /*
 * Maximum Sub Sequence Sum ********************
@@ -344,20 +277,23 @@ void computeTotient()
 void dot(ll a[][2],ll b[][2],ll res[][2])
 {
 	ll result[2][2];
-	result[0][0]=add(mul(a[0][0],b[0][0]),mul(a[0][1],b[1][0]));
-	result[0][1]=add(mul(a[0][0],b[0][1]),mul(a[0][1],b[1][1]));
-	result[1][0]=add(mul(a[1][0],b[0][0]),mul(a[1][1],b[1][0]));
-	result[1][1]=add(mul(a[1][0],b[0][1]),mul(a[1][1],b[1][1]));
-	FOR(i,2)
-		FOR(j,2)
-			res[i][j] = result[i][j];
+	result[0][0]=((a[0][0]*b[0][0])%mod+(a[0][1]*b[1][0])%mod)%mod;
+	result[0][1]=((a[0][0]*b[0][1])%mod+(a[0][1]*b[1][1])%mod)%mod;
+	result[1][0]=((a[1][0]*b[0][0])%mod+(a[1][1]*b[1][0])%mod)%mod;
+	result[1][1]=((a[1][0]*b[0][1])%mod+(a[1][1]*b[1][1])%mod)%mod;
+	res[0][0]=result[0][0];
+	res[0][1]=result[0][1];
+	res[1][0]=result[1][0];
+	res[1][1]=result[1][1];
 }
 int fibonacci(ll n)
 {
 	ll result[2][2]={{1,0},{0,1}};
 	ll base[2][2]={{1,1},{1,0}};
-	if(n<2)
-		return n;
+	if(n is 0)
+		return 0;
+	else if(n is 1)
+		return 1;
 	while(n>0)
 	{
 		if(n&1)
@@ -375,17 +311,33 @@ int fibonacci(ll n)
 ll power(ll x, ll y, ll p)
 {
 	x=x%p;
-	if(x < 2)
-		return x;
+	if(x is 0)
+		return 0;
 	ll result=1;
-	for(;y>0;y>>=1,x=mul(x,x))
+	while(y>0)
+	{
 		if(y&1)
-			result = mul(result,x);
+			result=(result*x)%p;
+		x=(x*x)%p;
+		y>>=1;
+	}
 	return result;
 }
 */
 /*
 * Count set_bits *****************************************************
+*/
+/*
+int set_bits(ll n)
+{
+	int c=0;
+	while(n>0)
+	{
+		c+=n&2;
+		n/=2;
+	}
+	return c;
+}
 */
 /*
 * Fermat's Principle for ncr mod p ************************************
@@ -397,11 +349,30 @@ void generate_factorials()
 	for(int i=1;i<size;i++)
 		fact[i]=(fact[i-1]*i)%mod;
 }
-ll ncr_mod_p(ll n, ll r)
+ll power(ll x, ll y, ll p)
+{
+	x=x%p;
+	if(x is 0)
+		return 0;
+	ll result=1;
+	while(y>0)
+	{
+		if(y&1)
+			result=(result*x)%p;
+		x=(x*x)%p;
+		y>>=1;
+	}
+	return result;
+}
+ll modInverse(ll n, ll p)
+{
+	return power(n,p-2,p);
+}
+ll ncr_mod_p(ll n, ll r, ll p)
 {
 	if(r is 0)
 		return 1;
-	return mul(mul(fact[n],inverse(fact[r])), inverse(fact[n - r]));
+	return (fact[n] * modInverse(fact[r], p) % p * modInverse(fact[n - r], p) % p) % p;
 }
 */
 /*
@@ -437,14 +408,14 @@ stack* push(stack *node,int data)
 	node=temp;
     return node;
 }
-bool isEmpty(stack *node)
+bool empty(stack *node)
 {
     return (node is NULL);
 }
 void print_stack(stack *node)
 {
     stack *temp=node;
-    while(!isEmpty(temp))
+    while(!empty(temp))
     {
         printf("%d ",temp->data);
         temp=temp->next;
@@ -455,23 +426,23 @@ void print_stack(stack *node)
 * Doubly Linked List ADT ******************************************************
 */
 /*
-typedef struct queue
+typedef struct list
 {
 	int data;
-	struct queue *next;
-    struct queue *prev;
-}queue;
-queue *new_queue(int data)
+	struct list *next;
+    struct list *prev;
+}list;
+list *new_list(int data)
 {
-    queue *node = (list *)malloc(sizeof(queue));
+    list *node = (list *)malloc(sizeof(list));
     node->data=data;
     node->prev=NULL;
     node->next=NULL;
     return node;
 }
-queue *append(queue *node, int data)
+list *append(list *node, int data)
 {
-    queue *temp = (queue*)malloc(sizeof(queue));
+    list *temp = (list*)malloc(sizeof(list));
     temp->data=data;
     temp->prev=node;
     temp->next=NULL;
@@ -479,34 +450,34 @@ queue *append(queue *node, int data)
     node=temp;
     return node;
 }
-queue *delete(queue *node)
+list *delete(list *node)
 {
     if(node->next is NULL)
         return NULL;
-    queue *temp=node;
+    list *temp=node;
     node=node->next;
     free(temp);
     node->prev=NULL;
     return node;
 }
-queue *pop(queue *node)
+list *pop(list *node)
 {
 	if(node->prev is NULL)
 		return NULL;
-	queue *temp=node;
+	list *temp=node;
 	node=node->prev;
 	free(temp);
 	node->next=NULL;
 	return node;
 }
-bool isEmpty(queue *node)
+bool empty(list *node)
 {
     return node is NULL;
 }
-void print_queue(queue *node)
+void print_list(list *node)
 {
-    queue *temp = node;
-    while (!isEmpty(temp))
+    list *temp = node;
+    while (!empty(temp))
     {
         printf("%d ",temp->data);
         temp=temp->next;

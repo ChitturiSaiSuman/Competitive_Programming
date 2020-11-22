@@ -162,95 +162,32 @@ def nth_fibonacci(n):
     return result[0][1]
 """
 class Graph:
-    def __init__(self,V,E):
-        self.V = V+1
-        self.E = E
+    def __init__(self,n):
+        self.V = n+1
         self.graph = defaultdict(list)
-
-    def addEdge(self,a,b):
-        self.graph[a].append(b)
-        self.graph[b].append(a)
-    
-    def bfs(self,start):
+    def addEdge(self,u,v):
+        self.graph[u].append(v)
+        self.graph[v].append(u)
+    def bfs(self,s):
         visited = [False]*(self.V)
-        queue = [start]
-        visited[start] = True
+        queue = []
+        queue.append(s)
+        visited[s]=True
         while queue:
-            start = queue.pop(0)
-            for node in self.graph[start]:
-                if not visited[node]:
-                    visited[node] = True
-                    queue.append(node)
-    
-    # def bfs(self,start,end):
-    #     visited = [False]*(self.V)
-    #     queue = [start]
-    #     visited[start] = True
-    #     while not visited[end] and queue:
-    #         start = queue.pop(0)
-    #         for node in self.graph[start]:
-    #             if not visited[node]:
-    #                 visited[node] = True
-    #                 queue.append(node)
-    
-    # def bfs(self,start,end,visited):
-    #     queue = [start]
-    #     visited[start] = True
-    #     while not visited[end] and queue:
-    #         start = queue.pop(0)
-    #         for node in self.graph[start]:
-    #             if not visited[node]:
-    #                 visited[node] = True
-    #                 queue.append(node)
-    
-    # def dfs(self,start):
-    #     stack = [start]
-    #     visited = [False]*(self.V)
-    #     while stack:
-    #         start = stack.pop()
-    #         for node in self.graph[start]:
-    #             if not visited[node]:
-    #                 visited[node] = True
-    #                 stack.append(node)
-    
-    # def dfs(self,start,end):
-    #     stack = [start]
-    #     visited = [False]*(self.V)
-    #     while not visited[end] and stack:
-    #         start = stack.pop()
-    #         for node in self.graph[start]:
-    #             if not visited[node]:
-    #                 visited[node] = True
-    #                 stack.append(node)
-    
-    # def dfs(self,start,end,visited):
-    #     stack = [start]
-    #     while not visited[end] and stack:
-    #         start = stack.pop()
-    #         for node in self.graph[start]:
-    #             if not visited[node]:
-    #                 visited[node] = True
-    #                 stack.append(node)
-
-class DSU:
-    def __init__(self,N):
-        self.N = N+1
-        self.Arr = [i for i in range(self.N)]
-        self.Size = [i for i in range(self.N)]
-    def root(self,item):
-        while self.Arr[item]!=item:
-            self.Arr[item] = self.Arr[self.Arr[item]]
-            item = self.Arr[item]
-        return item
-    def find(self,A,B):
-        return self.root(A)==self.root(B)
-    def union(self,A,B):
-        rootA = self.root(A)
-        rootB = self.root(B)
-        if self.Size[rootA]<self.Size[rootB]:
-            self.Arr[rootA] = self.Arr[rootB]
-            self.Size[rootB] += self.Size[rootA]
-        else:
-            self.Arr[rootB] = self.Arr[rootA]
-            self.Size[rootA] += self.Size[rootB]
-    
+            s = queue.pop(0)
+            print(s,end=" ")
+            for i in self.graph[s]:
+                if not visited[i]:
+                    queue.append(i)
+                    visited[i]=True
+    def dfs(self,s):
+        visited = [False]*self.V
+        stack = [s]
+        visited[s]=True
+        while stack:
+            s = stack.pop()
+            print(s,end=" ")
+            for i in self.graph[s]:
+                if not visited[i]:
+                    stack.append(i)
+                    visited[i]=True
