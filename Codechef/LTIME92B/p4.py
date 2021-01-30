@@ -67,7 +67,16 @@ def main():
         # io.write("Case #%d: "%(test+1),end="")
         n,k = io.Tuple()
         l = io.List()
-        io.write("YES" if (k&(k-1))==0 or all([i%k == 0 for i in l]) else "NO")
+        if (k&(k-1)) == 0:
+            io.write("YES")
+            continue
+        flag = True
+        for i in l:
+            if i%k == 0:
+                continue
+            temp = lcm(k,i)//i
+            flag = flag and ((temp)&(temp-1))==1
+        io.write("YES" if flag else "NO")
         # solve()
 
 
