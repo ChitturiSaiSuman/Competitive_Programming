@@ -73,17 +73,36 @@ def solve():
     l1 = cumsum(io.List())
     l2 = cumsum(io.List())
     ans = 0
-    i = 0
-    while i < m and l1[i] <= s:
-        j = 0
-        c = 0
-        while j < n and l2[j] + l1[i] <= s:
-            j += 1
-        c = j + i + 1
-        ans = max(ans, c)
-        i += 1
+    for i in range(m):
+        if l1[i] > s:
+            ans = max(ans, i)
+            break
+        j = bisect_right(l2, s - l1[i])
+        # io.debug(l1[i], j)
+        if j >= 0 and j <= n:
+            if j == 0:
+                if l2[j] == s - l1[i]:
+                    ans = max(ans, i + 1)
+                else:
+                    ans = max(ans, i + j + 1)
+            else:
+                ans = max(ans, i + j + 1)
+    for i in range(n):
+        if l2[i] > s:
+            ans = max(ans, i)
+            break
+        j = bisect_right(l1, s - l2[i])
+        # io.debug(l2[i], j)
+        if j >= 0 and j <= n:
+            if j == 0:
+                if l1[j] == s - l2[i]:
+                    ans = max(ans, i + 1)
+                else:
+                    ans = max(ans, i + j + 1)
+            else:
+                ans = max(ans, i + j + 1)
     io.write(ans)
-    return
+    # return
 
 def main():
     io = IO()
