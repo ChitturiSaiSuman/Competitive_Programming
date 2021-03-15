@@ -1,0 +1,19 @@
+Pattern decoded using test.c
+
+
+read n
+let c = (int)(log2(n)) + 1
+base = 2 ^ c - 1
+baseValue = (base * (base - 1))/2
+term = n - (2 ^ (c - 1))
+ans = baseValue - (term * (2 ^ (c - 1)) + 1)
+
+example:
+
+
+n = 9
+c = 4
+base = 15
+basevalue = 105
+term = 9 - 8 = 1
+ans = 105 - (1 * (8) - 1) = 98
